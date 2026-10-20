@@ -15,6 +15,7 @@
     --line: #eceef5;
     --field: #f1f2f8;
     --a: #5b6cff;
+    --p: #10b981;
     --danger: #ef4444;
     color-scheme: light;
   }
@@ -40,7 +41,7 @@
     padding: 16px 16px 56px;
   }
   main { max-width: 460px; margin: 0 auto; }
-  button { font: inherit; color: inherit; }
+  button, select { font: inherit; color: inherit; }
   :focus-visible { outline: 2px solid var(--a); outline-offset: 2px; }
 
   /* Glava */
@@ -83,6 +84,7 @@
     transition: transform .22s ease, visibility .22s;
     z-index: 11;
     display: flex; flex-direction: column; gap: 4px;
+    overflow-y: auto;
   }
   body.menu-open .scrim { opacity: 1; visibility: visible; }
   body.menu-open .drawer { transform: none; visibility: visible; }
@@ -100,7 +102,7 @@
   .nav-item[aria-current="page"] { background: var(--field); font-weight: 600; }
   .nav-item[aria-current="page"] svg { color: var(--ic, var(--a)); }
   .drawer hr { border: 0; border-top: 1px solid var(--line); margin: 10px 6px; width: calc(100% - 12px); }
-  .drawer .foot { margin-top: auto; padding: 0 8px; font-size: 12px; color: var(--muted); }
+  .drawer .foot { margin-top: auto; padding: 12px 8px 0; font-size: 12px; color: var(--muted); }
 
   /* Zavihki dni */
   .tabs { display: flex; gap: 6px; margin-bottom: 16px; }
@@ -120,6 +122,7 @@
   .progress { color: var(--muted); font-size: 14px; font-variant-numeric: tabular-nums; }
   .bar { height: 4px; border-radius: 4px; background: var(--line); margin-bottom: 12px; overflow: hidden; }
   .bar i { display: block; height: 100%; width: 0; background: var(--a); border-radius: 4px; transition: width .2s; }
+  .bar.p i { background: var(--p); }
 
   .card { background: var(--card); border-radius: 18px; padding: 4px 16px; }
   .row { padding: 14px 0; border-bottom: 1px solid var(--line); }
@@ -154,7 +157,7 @@
 
   .fields { display: flex; gap: 10px; margin: 10px 0 0 38px; align-items: center; flex-wrap: wrap; }
   .fields label { display: flex; align-items: center; gap: 6px; color: var(--muted); font-size: 13px; }
-  input[type="text"], input[type="number"] {
+  input[type="text"], input[type="number"], select {
     width: 74px;
     padding: 9px 10px;
     border: 1px solid transparent;
@@ -166,6 +169,25 @@
   }
   input::placeholder { color: var(--muted); opacity: .55; }
   .prev { margin: 6px 0 0 38px; font-size: 12px; color: var(--muted); }
+  .sets { margin: 10px 0 0 38px; }
+  .set { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+  .set .no { width: 18px; color: var(--muted); font-size: 13px; font-variant-numeric: tabular-nums; }
+  .set label { display: flex; align-items: center; gap: 6px; color: var(--muted); font-size: 13px; }
+  .set input { width: 72px; }
+  .setbtns { display: flex; gap: 8px; }
+  .setbtns button {
+    padding: 6px 12px;
+    border: 0; border-radius: 999px;
+    background: var(--field); color: var(--muted);
+    font-size: 13px; cursor: pointer;
+  }
+
+  .ghost {
+    width: 100%; margin-top: 14px; padding: 12px;
+    border: 1px solid var(--line); border-radius: 12px;
+    background: transparent; color: var(--muted);
+    font-size: 14px; cursor: pointer;
+  }
 
   /* Kalorije */
   .datenav { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
@@ -183,20 +205,23 @@
   .big small { font-size: 15px; font-weight: 500; color: var(--muted); letter-spacing: 0; margin-left: 4px; }
   .remain { font-size: 14px; color: var(--muted); margin: 4px 0 12px; }
   .summary.over .big, .summary.over .remain { color: var(--danger); }
-  .summary.over .bar i { background: var(--danger); }
+  .summary.over .bar.k i { background: var(--danger); }
   .summary .bar { margin-bottom: 14px; }
-  .goal { display: flex; align-items: center; gap: 8px; color: var(--muted); font-size: 13px; }
-  .goal input { width: 90px; }
+  .pline { display: flex; justify-content: space-between; font-size: 14px; margin-bottom: 6px; }
+  .pline b { color: var(--p); font-variant-numeric: tabular-nums; }
+  .goal { display: flex; align-items: center; gap: 8px; color: var(--muted); font-size: 13px; margin-top: 6px; }
+  .goal input { width: 84px; }
 
-  .add { display: flex; gap: 8px; margin-bottom: 10px; }
-  .add input[type="text"] { flex: 1; width: auto; min-width: 0; }
-  .add input[type="number"] { width: 84px; }
+  .add { display: flex; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
+  .add input[type="text"] { flex: 1 1 100%; width: auto; min-width: 0; }
+  .add input[type="number"] { flex: 1; width: auto; min-width: 0; }
   .btn {
-    padding: 0 16px;
+    padding: 10px 18px;
     border: 0; border-radius: 10px;
     background: var(--a); color: #fff;
     font-weight: 600; cursor: pointer;
   }
+  .btn.full { width: 100%; margin-top: 4px; padding: 12px; }
   .recents { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 14px; }
   .recents button {
     padding: 6px 11px;
@@ -208,7 +233,8 @@
   .entry { display: flex; align-items: center; gap: 10px; padding: 12px 0; border-bottom: 1px solid var(--line); }
   .entry:last-child { border-bottom: 0; }
   .entry .n { flex: 1; min-width: 0; overflow-wrap: anywhere; }
-  .entry .k { font-variant-numeric: tabular-nums; font-weight: 600; }
+  .entry .k { font-variant-numeric: tabular-nums; font-weight: 600; text-align: right; }
+  .entry .k em { display: block; font-style: normal; font-weight: 500; font-size: 12px; color: var(--p); }
   .entry .x {
     width: 32px; height: 32px;
     border: 0; border-radius: 8px;
@@ -216,6 +242,13 @@
     font-size: 20px; line-height: 1; cursor: pointer;
   }
   .empty { color: var(--muted); padding: 18px 0; text-align: center; font-size: 14px; }
+
+  /* Kalkulator */
+  .frow { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--line); }
+  .frow:last-child { border-bottom: 0; }
+  .frow select { width: 180px; font-size: 14px; }
+  .frow input { width: 100px; text-align: right; }
+  .note { font-size: 12px; color: var(--muted); margin: 12px 4px 0; }
 
   @media (prefers-reduced-motion: reduce) {
     * { transition: none !important; }
@@ -227,8 +260,10 @@
 <aside class="drawer" id="drawer" aria-label="Meni">
   <div class="brand"><span class="logo" data-icon="dumbbell"></span>Fitnes</div>
   <button class="nav-item" id="nav-workout" type="button" style="--ic:#5b6cff"><span data-icon="dumbbell"></span>Trening</button>
-  <button class="nav-item" id="nav-cal" type="button" style="--ic:#f59e0b"><span data-icon="flame"></span>Kalorije</button>
+  <button class="nav-item" id="nav-cal" type="button" style="--ic:#f59e0b"><span data-icon="flame"></span>Kalorije in beljakovine</button>
+  <button class="nav-item" id="nav-calc" type="button" style="--ic:#06b6d4"><span data-icon="calc"></span>Kalkulator kalorij</button>
   <hr>
+  <button class="nav-item" id="newweek" type="button"><span data-icon="refresh"></span>Začni nov teden</button>
   <button class="nav-item" id="export" type="button"><span data-icon="download"></span>Izvozi podatke</button>
   <button class="nav-item" id="import" type="button"><span data-icon="upload"></span>Uvozi podatke</button>
   <input id="file" type="file" accept="application/json" hidden>
@@ -287,12 +322,15 @@ const DAYS = [
 ];
 const CARDIO = ['Incline walk', '15–20 min'];
 const CAL_COLOR = '#f59e0b';
+const CALC_COLOR = '#06b6d4';
 /* ------------------------------------- */
 
 const ICONS = {
   dumbbell: '<path d="M6.5 6.5v11M17.5 6.5v11M3.5 9v6M20.5 9v6M6.5 12h11"/>',
   menu: '<path d="M4 7h16M4 12h16M4 17h16"/>',
   flame: '<path d="M12 3c.5 3.5 4.5 5.5 4.5 10a4.5 4.5 0 0 1-9 0c0-1.8.8-3 1.8-4 .3 1.2 1 2 1.9 2.3C11 8.5 11 5.5 12 3z"/>',
+  calc: '<rect x="5" y="3" width="14" height="18" rx="2"/><path d="M8 7h8M8 12h.01M12 12h.01M16 12h.01M8 16h.01M12 16h.01M16 16h.01"/>',
+  refresh: '<path d="M20 11a8 8 0 1 0-2.3 5.7M20 4v7h-7"/>',
   download: '<path d="M12 4v11M7.5 11 12 15.5 16.5 11M5 20h14"/>',
   upload: '<path d="M12 16V5M7.5 9 12 4.5 16.5 9M5 20h14"/>'
 };
@@ -305,7 +343,7 @@ function icon(name) {
   s.setAttribute('stroke-linecap', 'round');
   s.setAttribute('stroke-linejoin', 'round');
   s.setAttribute('aria-hidden', 'true');
-  s.innerHTML = ICONS[name]; // statični konstanti zgoraj
+  s.innerHTML = ICONS[name]; // statične konstante zgoraj
   return s;
 }
 function paintIcons(root) {
@@ -320,6 +358,7 @@ let view = 'workout';
 let current = pickDay();
 const today = ymd(new Date());
 let calDate = today;
+let WEEK = effectiveWeek();
 
 function load() {
   let d = null;
@@ -329,6 +368,8 @@ function load() {
   if (!d.cal || typeof d.cal !== 'object') d.cal = {};
   if (!d.cal.days || typeof d.cal.days !== 'object') d.cal.days = {};
   if (d.cal.goal == null) d.cal.goal = '';
+  if (d.cal.proteinGoal == null) d.cal.proteinGoal = '';
+  d.cal.profile = Object.assign({ sex: 'm', age: '', height: '', weight: '', act: '1.55', goal: '0' }, d.cal.profile || {});
   return d;
 }
 function save() {
@@ -340,11 +381,15 @@ function ymd(d) { return d.getFullYear() + '-' + p2(d.getMonth() + 1) + '-' + p2
 function parse(s) { const [y, m, d] = s.split('-').map(Number); return new Date(y, m - 1, d); }
 function shift(s, n) { const d = parse(s); d.setDate(d.getDate() + n); return ymd(d); }
 
-// Teden se začne v nedeljo (prvi trening).
+// Teden se samodejno začne v nedeljo; ročni nov teden ima ključ z uro (npr. 2026-10-23.1415).
 function weekStart(d) {
   return ymd(new Date(d.getFullYear(), d.getMonth(), d.getDate() - d.getDay()));
 }
-const WEEK = weekStart(new Date());
+function effectiveWeek() {
+  const auto = weekStart(new Date());
+  const manual = db.weekKey || '';
+  return manual > auto ? manual : auto;
+}
 
 function pickDay() {
   const map = { 0: 'ned', 1: 'pon', 2: 'sre', 3: 'sre', 4: 'cet', 5: 'ned', 6: 'ned' };
@@ -359,9 +404,34 @@ function previous(key) {
   const weeks = Object.keys(db.weeks).filter(w => w < WEEK).sort().reverse();
   for (const w of weeks) {
     const e = db.weeks[w][key];
-    if (e && (e.kg || e.reps || e.min)) return e;
+    if (e && (e.min || prevOf(e).some(s => s.kg || s.reps))) return e;
   }
   return null;
+}
+// Serije vaje; podpira tudi stare vnose (en kg + ponovitve).
+function prevOf(e) {
+  if (Array.isArray(e.sets) && e.sets.length) return e.sets;
+  return (e.kg || e.reps) ? [{ kg: e.kg, reps: e.reps }] : [];
+}
+function getSets(e, n) {
+  if (!Array.isArray(e.sets)) {
+    e.sets = (e.kg || e.reps) ? [{ kg: e.kg || '', reps: e.reps || '' }] : [];
+    while (e.sets.length < n) e.sets.push({ kg: '', reps: '' });
+  }
+  return e.sets;
+}
+function hasData(w) {
+  const o = db.weeks[w];
+  return !!o && Object.values(o).some(e => e.done || e.min || prevOf(e).some(s => s.kg || s.reps));
+}
+function startNewWeek() {
+  if (!hasData(WEEK)) { alert('Ta teden je še prazen.'); return; }
+  if (!confirm('Začnem nov teden? Kljukice se počistijo, vnosi tega tedna ostanejo kot referenca.')) return;
+  const n = new Date();
+  db.weekKey = ymd(n) + '.' + p2(n.getHours()) + p2(n.getMinutes());
+  save();
+  WEEK = effectiveWeek();
+  go('workout');
 }
 
 function el(tag, attrs, ...kids) {
@@ -387,7 +457,7 @@ const burger = document.getElementById('burger');
 function openMenu(open) {
   document.body.classList.toggle('menu-open', open);
   burger.setAttribute('aria-expanded', open);
-  if (open) document.getElementById('nav-' + (view === 'workout' ? 'workout' : 'cal')).focus();
+  if (open) document.getElementById('nav-' + view).focus();
   else burger.focus();
 }
 burger.onclick = () => openMenu(!document.body.classList.contains('menu-open'));
@@ -403,6 +473,8 @@ function go(v) {
 }
 document.getElementById('nav-workout').onclick = () => go('workout');
 document.getElementById('nav-cal').onclick = () => go('cal');
+document.getElementById('nav-calc').onclick = () => go('calc');
+document.getElementById('newweek').onclick = () => { document.body.classList.remove('menu-open'); startNewWeek(); };
 
 /* ---------- Trening ---------- */
 function renderWorkout(root) {
@@ -459,30 +531,54 @@ function renderWorkout(root) {
       min.oninput = () => { entry(it.key).min = min.value; save(); };
       fields.append(el('label', {}, min, 'min'));
     } else {
-      const kg = el('input', { type: 'number', inputMode: 'decimal', step: 'any', min: 0, placeholder: prev && prev.kg ? prev.kg : '0', value: e.kg || '' });
-      const reps = el('input', { type: 'text', inputMode: 'numeric', placeholder: prev && prev.reps ? prev.reps : '0', value: e.reps || '' });
-      kg.oninput = () => { entry(it.key).kg = kg.value; save(); };
-      reps.oninput = () => { entry(it.key).reps = reps.value; save(); };
-      fields.append(el('label', {}, kg, 'kg'), el('label', {}, reps, 'ponovitev'));
+      fields.className = 'sets';
+      const n = Number((it.sets.match(/^\d+/) || [3])[0]);
+      const list = getSets(entry(it.key), n);
+      const prevSets = prev ? prevOf(prev) : [];
+      const box = el('div');
+      const drawSets = () => {
+        box.replaceChildren();
+        list.forEach((s, i) => {
+          const ps = prevSets[i] || {};
+          const kg = el('input', { type: 'number', inputMode: 'decimal', step: 'any', min: 0, placeholder: ps.kg || '0', value: s.kg || '' });
+          const reps = el('input', { type: 'text', inputMode: 'numeric', placeholder: ps.reps || '0', value: s.reps || '' });
+          kg.oninput = () => { s.kg = kg.value; save(); };
+          reps.oninput = () => { s.reps = reps.value; save(); };
+          box.append(el('div', { class: 'set' },
+            el('span', { class: 'no', textContent: (i + 1) + '.' }),
+            el('label', {}, kg, 'kg'),
+            el('label', {}, reps, 'ponovitev')));
+        });
+      };
+      drawSets();
+      const addSet = el('button', { type: 'button', textContent: '+ serija' });
+      addSet.onclick = () => { list.push({ kg: '', reps: '' }); save(); drawSets(); };
+      const delSet = el('button', { type: 'button', textContent: '− serija' });
+      delSet.onclick = () => { if (list.length > 1) { list.pop(); save(); drawSets(); } };
+      fields.append(box, el('div', { class: 'setbtns' }, addSet, delSet));
     }
     row.append(fields);
 
     if (prev) {
       const txt = it.cardio
         ? 'prejšnjič ' + (prev.min || '–') + ' min'
-        : 'prejšnjič ' + (prev.kg || '–') + ' kg × ' + (prev.reps || '–');
+        : 'prejšnjič ' + prevOf(prev).filter(s => s.kg || s.reps).map(s => (s.kg || '–') + '×' + (s.reps || '–')).join(' · ');
       row.append(el('div', { class: 'prev', textContent: txt }));
     }
     card.append(row);
   });
   root.append(card);
+
+  const nw = el('button', { type: 'button', class: 'ghost', textContent: 'Začni nov teden' });
+  nw.onclick = startNewWeek;
+  root.append(nw);
   updateProgress();
 
-  const [, m, d] = WEEK.split('-');
+  const [, m, d] = WEEK.slice(0, 10).split('-');
   setHeader('Trening', 'Teden od ' + Number(d) + '. ' + Number(m) + '.');
 }
 
-/* ---------- Kalorije ---------- */
+/* ---------- Kalorije in beljakovine ---------- */
 const DAYNAMES = ['Ned', 'Pon', 'Tor', 'Sre', 'Čet', 'Pet', 'Sob'];
 function dateLabel(s) {
   if (s === today) return 'Danes';
@@ -491,14 +587,14 @@ function dateLabel(s) {
   return DAYNAMES[d.getDay()] + ', ' + d.getDate() + '. ' + (d.getMonth() + 1) + '.';
 }
 function dayEntries(s) { return db.cal.days[s] || (db.cal.days[s] = []); }
-function total(s) { return (db.cal.days[s] || []).reduce((a, e) => a + (Number(e.kcal) || 0), 0); }
+function total(s, f) { return (db.cal.days[s] || []).reduce((a, e) => a + (Number(e[f]) || 0), 0); }
 
 function recentItems() {
   const seen = new Set(), out = [];
   Object.keys(db.cal.days).sort().reverse().forEach(day => {
     (db.cal.days[day] || []).slice().reverse().forEach(e => {
       if (!e.name) return;
-      const k = e.name.toLowerCase() + '|' + e.kcal;
+      const k = e.name.toLowerCase() + '|' + e.kcal + '|' + (e.protein || 0);
       if (!seen.has(k) && out.length < 8) { seen.add(k); out.push(e); }
     });
   });
@@ -520,50 +616,71 @@ function renderCal(root) {
   const big = el('div', { class: 'big' });
   const remain = el('div', { class: 'remain' });
   const bar = el('i');
-  const summary = el('div', { class: 'summary' }, big, remain, el('div', { class: 'bar' }, bar));
+  const pVal = el('b');
+  const pBar = el('i');
+  const summary = el('div', { class: 'summary' },
+    big, remain,
+    el('div', { class: 'bar k' }, bar),
+    el('div', { class: 'pline' }, el('span', { textContent: 'Beljakovine' }), pVal),
+    el('div', { class: 'bar p' }, pBar)
+  );
   const goalIn = el('input', { type: 'number', inputMode: 'numeric', min: 0, placeholder: '2500', value: db.cal.goal || '' });
   goalIn.oninput = () => { db.cal.goal = goalIn.value; save(); updateSummary(); };
-  summary.append(el('label', { class: 'goal' }, 'Dnevni cilj', goalIn, 'kcal'));
+  const pGoalIn = el('input', { type: 'number', inputMode: 'numeric', min: 0, placeholder: '150', value: db.cal.proteinGoal || '' });
+  pGoalIn.oninput = () => { db.cal.proteinGoal = pGoalIn.value; save(); updateSummary(); };
+  summary.append(
+    el('label', { class: 'goal' }, 'Cilj kalorij', goalIn, 'kcal'),
+    el('label', { class: 'goal' }, 'Cilj beljakovin', pGoalIn, 'g')
+  );
   root.append(summary);
 
   function updateSummary() {
-    const t = total(calDate);
+    const t = total(calDate, 'kcal');
     const g = Number(db.cal.goal) || 0;
     big.replaceChildren(String(t), el('small', { textContent: g ? '/ ' + g + ' kcal' : 'kcal' }));
     summary.classList.toggle('over', g > 0 && t > g);
-    if (!g) { remain.textContent = 'Nastavi dnevni cilj spodaj.'; bar.style.width = '0'; return; }
-    bar.style.width = Math.min(100, t / g * 100) + '%';
-    remain.textContent = t > g ? 'Preseženo za ' + (t - g) + ' kcal' : 'Še ' + (g - t) + ' kcal';
+    if (!g) { remain.textContent = 'Nastavi cilj spodaj ali uporabi kalkulator.'; bar.style.width = '0'; }
+    else {
+      bar.style.width = Math.min(100, t / g * 100) + '%';
+      remain.textContent = t > g ? 'Preseženo za ' + (t - g) + ' kcal' : 'Še ' + (g - t) + ' kcal';
+    }
+    const pt = total(calDate, 'protein');
+    const pg = Number(db.cal.proteinGoal) || 0;
+    pVal.textContent = pg ? pt + ' / ' + pg + ' g' : pt + ' g';
+    pBar.style.width = pg ? Math.min(100, pt / pg * 100) + '%' : '0';
   }
   updateSummary();
 
   // Dodajanje
   const nameIn = el('input', { type: 'text', placeholder: 'Obrok (neobvezno)', maxLength: 60 });
   const kcalIn = el('input', { type: 'number', inputMode: 'numeric', min: 0, placeholder: 'kcal' });
+  const protIn = el('input', { type: 'number', inputMode: 'decimal', min: 0, placeholder: 'beljakovine g' });
   const addBtn = el('button', { type: 'button', class: 'btn', textContent: 'Dodaj' });
 
-  function add(name, kcal) {
-    const k = Math.round(Number(kcal));
-    if (!k || k < 0) return false;
-    dayEntries(calDate).push({ name: (name || '').trim(), kcal: k });
+  function add(name, kcal, protein) {
+    const k = Math.round(Number(kcal)) || 0;
+    const p = Math.round(Number(protein)) || 0;
+    if (k < 0 || p < 0 || (!k && !p)) return false;
+    dayEntries(calDate).push({ name: (name || '').trim(), kcal: k, protein: p });
     save();
     return true;
   }
   function submit() {
-    if (add(nameIn.value, kcalIn.value)) { render(); setTimeout(() => nameIn.focus(), 0); }
+    if (add(nameIn.value, kcalIn.value, protIn.value)) { render(); setTimeout(() => nameIn.focus(), 0); }
     else kcalIn.focus();
   }
   addBtn.onclick = submit;
-  [nameIn, kcalIn].forEach(i => i.addEventListener('keydown', e => { if (e.key === 'Enter') submit(); }));
-  root.append(el('div', { class: 'add' }, nameIn, kcalIn, addBtn));
+  [nameIn, kcalIn, protIn].forEach(i => i.addEventListener('keydown', e => { if (e.key === 'Enter') submit(); }));
+  root.append(el('div', { class: 'add' }, nameIn, kcalIn, protIn, addBtn));
 
   // Zadnje uporabljeno
   const rec = recentItems();
   if (rec.length) {
     const wrap = el('div', { class: 'recents' });
     rec.forEach(r => {
-      const b = el('button', { type: 'button', textContent: r.name + ' · ' + r.kcal });
-      b.onclick = () => { add(r.name, r.kcal); render(); };
+      const label = r.name + ' · ' + r.kcal + (r.protein ? ' · ' + r.protein + ' g' : '');
+      const b = el('button', { type: 'button', textContent: label });
+      b.onclick = () => { add(r.name, r.kcal, r.protein); render(); };
       wrap.append(b);
     });
     root.append(wrap);
@@ -573,22 +690,99 @@ function renderCal(root) {
   const list = dayEntries(calDate);
   const card = el('div', { class: 'card' });
   if (!list.length) {
-    card.append(el('div', { class: 'empty', textContent: 'Še ni vnosov. Vpiši kalorije zgoraj.' }));
+    card.append(el('div', { class: 'empty', textContent: 'Še ni vnosov. Vpiši kalorije ali beljakovine zgoraj.' }));
   } else {
     list.forEach((e, i) => {
       const x = el('button', { type: 'button', class: 'x', textContent: '×' });
       x.setAttribute('aria-label', 'Izbriši vnos');
       x.onclick = () => { list.splice(i, 1); save(); render(); };
+      const k = el('span', { class: 'k', textContent: e.kcal + ' kcal' });
+      if (e.protein) k.append(el('em', { textContent: e.protein + ' g beljakovin' }));
       card.append(el('div', { class: 'entry' },
         el('span', { class: 'n', textContent: e.name || 'Vnos' }),
-        el('span', { class: 'k', textContent: e.kcal + ' kcal' }),
-        x
+        k, x
       ));
     });
   }
   root.append(card);
 
   setHeader('Kalorije', dateLabel(calDate));
+}
+
+/* ---------- Kalkulator ---------- */
+function renderCalc(root) {
+  setAccent(CALC_COLOR);
+  const pr = db.cal.profile;
+
+  const sexSel = el('select', {},
+    el('option', { value: 'm', textContent: 'Moški' }),
+    el('option', { value: 'f', textContent: 'Ženska' }));
+  sexSel.value = pr.sex;
+  const ageIn = el('input', { type: 'number', inputMode: 'numeric', min: 14, max: 100, placeholder: 'let', value: pr.age });
+  const heightIn = el('input', { type: 'number', inputMode: 'numeric', min: 120, max: 230, placeholder: 'cm', value: pr.height });
+  const weightIn = el('input', { type: 'number', inputMode: 'decimal', step: 'any', min: 30, max: 250, placeholder: 'kg', value: pr.weight });
+  const actSel = el('select', {},
+    el('option', { value: '1.2', textContent: 'Sedeč' }),
+    el('option', { value: '1.375', textContent: 'Rahlo (1–3×/ted.)' }),
+    el('option', { value: '1.55', textContent: 'Zmerno (3–5×/ted.)' }),
+    el('option', { value: '1.725', textContent: 'Zelo (6–7×/ted.)' }));
+  actSel.value = pr.act;
+  const goalSel = el('select', {},
+    el('option', { value: '-400', textContent: 'Hujšanje (−400 kcal)' }),
+    el('option', { value: '0', textContent: 'Vzdrževanje' }),
+    el('option', { value: '300', textContent: 'Masa (+300 kcal)' }));
+  goalSel.value = pr.goal;
+
+  const frow = (label, ctl) => el('div', { class: 'frow' }, el('span', { textContent: label }), ctl);
+  root.append(el('div', { class: 'card' },
+    frow('Spol', sexSel),
+    frow('Starost (let)', ageIn),
+    frow('Višina (cm)', heightIn),
+    frow('Teža (kg)', weightIn),
+    frow('Aktivnost', actSel),
+    frow('Cilj', goalSel)
+  ));
+
+  const res = el('div', { class: 'summary', style: 'margin-top:12px' });
+  root.append(res);
+  root.append(el('div', { class: 'note', textContent: 'Ocena po formuli Mifflin-St Jeor. Po 2–3 tednih primerjaj s tehtnico in po potrebi popravi za 100–200 kcal. Beljakovine: 1,8 g na kg teže.' }));
+
+  function update() {
+    const age = Number(pr.age), h = Number(pr.height), w = Number(pr.weight);
+    const ok = age >= 14 && age <= 100 && h >= 120 && h <= 230 && w >= 30 && w <= 250;
+    res.replaceChildren();
+    if (!ok) {
+      res.append(el('div', { class: 'remain', style: 'margin:0', textContent: 'Vpiši starost, višino in težo.' }));
+      return;
+    }
+    const bmr = 10 * w + 6.25 * h - 5 * age + (pr.sex === 'm' ? 5 : -161);
+    const tdee = bmr * Number(pr.act);
+    const r10 = n => Math.round(n / 10) * 10;
+    const target = Math.max(r10(tdee + Number(pr.goal)), r10(bmr));
+    const prot = Math.round(1.8 * w);
+    const lo = Math.round(1.6 * w), hi = Math.round(2.2 * w);
+
+    const apply = el('button', { type: 'button', class: 'btn full', textContent: 'Nastavi kot dnevni cilj' });
+    apply.onclick = () => {
+      db.cal.goal = String(target);
+      db.cal.proteinGoal = String(prot);
+      save();
+      go('cal');
+    };
+    res.append(
+      el('div', { class: 'remain', style: 'margin-top:0', textContent: 'Priporočen dnevni vnos' }),
+      el('div', { class: 'big' }, String(target), el('small', { textContent: 'kcal' })),
+      el('div', { class: 'remain', textContent: 'Beljakovine ≈ ' + prot + ' g (razpon ' + lo + '–' + hi + ' g)' }),
+      el('div', { class: 'remain', textContent: 'Bazalni metabolizem ' + Math.round(bmr) + ' · vzdrževanje ' + Math.round(tdee) + ' kcal' }),
+      apply
+    );
+  }
+  const bind = (ctl, key) => ctl.addEventListener('input', () => { pr[key] = ctl.value; save(); update(); });
+  bind(sexSel, 'sex'); bind(ageIn, 'age'); bind(heightIn, 'height');
+  bind(weightIn, 'weight'); bind(actSel, 'act'); bind(goalSel, 'goal');
+  update();
+
+  setHeader('Kalkulator', 'Dnevne kalorije in beljakovine');
 }
 
 /* ---------- Skupno ---------- */
@@ -599,9 +793,11 @@ function setHeader(t, s) {
 function render() {
   const root = document.getElementById('view');
   root.replaceChildren();
-  if (view === 'workout') renderWorkout(root); else renderCal(root);
-  document.getElementById('nav-workout').setAttribute('aria-current', view === 'workout' ? 'page' : 'false');
-  document.getElementById('nav-cal').setAttribute('aria-current', view === 'cal' ? 'page' : 'false');
+  if (view === 'workout') renderWorkout(root);
+  else if (view === 'cal') renderCal(root);
+  else renderCalc(root);
+  ['workout', 'cal', 'calc'].forEach(v =>
+    document.getElementById('nav-' + v).setAttribute('aria-current', view === v ? 'page' : 'false'));
 }
 
 // Izvoz / uvoz
@@ -623,6 +819,7 @@ file.onchange = () => {
       if (!data || typeof data.weeks !== 'object') throw new Error();
       localStorage.setItem(KEY, JSON.stringify(data));
       db = load();
+      WEEK = effectiveWeek();
       openMenu(false);
       render();
     } catch (e) { alert('Datoteka ni veljavna.'); }
